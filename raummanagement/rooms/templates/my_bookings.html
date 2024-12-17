@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+{% block title %}Meine Buchungen{% endblock %}
+{% block content %}
+<h2>Meine Buchungen</h2>
+<ul>
+    {% for booking in bookings %}
+    <li>
+        Raum {{ booking.room.number }} - {{ booking.booking_date }} 
+        ({{ booking.start_time }} - {{ booking.end_time }})
+        <a href="{% url 'delete_booking' booking.id %}">Löschen</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

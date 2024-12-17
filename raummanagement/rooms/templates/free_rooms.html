@@ -1,0 +1,11 @@
+
+{% extends 'base.html' %}
+{% block title %}Freie Räume{% endblock %}
+{% block content %}
+<h2>Freie Räume</h2>
+<ul>
+    {% for room in rooms %}
+    <li>{{ room.number }} - {{ room.building.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

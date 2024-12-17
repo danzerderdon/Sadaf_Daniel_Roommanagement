@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}THA Raummanagement{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'rooms/styles.css' %}">
+</head>
+<body>
+    <h1>THA Raummanagement</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'building_list' %}">Gebäude</a></li>
+            <li><a href="{% url 'filter_rooms' %}">Räume Filtern</a></li>
+            <li><a href="{% url 'free_rooms' %}">Freie Räume</a></li>
+            <li><a href="{% url 'my_bookings' %}">Meine Buchungen</a></li>
+            <li><a href="{% url 'account_settings' %}">Einstellungen</a></li>
+            <li><a href="{% url 'logout' %}">Abmelden</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+{% block title %}Räume filtern{% endblock %}
+{% block content %}
+<h2>Räume filtern</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="room_type">Raumtyp:</label>
+    <select id="room_type" name="room_type">
+        <option value="lecture">Hörsaal</option>
+        <option value="seminar">Seminarraum</option>
+        <option value="laboratory">Labor</option>
+        <option value="office">Büro</option>
+        <option value="other">Andere</option>
+    </select>
+    <label for="equipment">Ausstattung:</label>
+    <div>
+        <input type="checkbox" id="projector" name="equipment" value="Projektor">
+        <label for="projector">Projektor</label><br>
+        <input type="checkbox" id="whiteboard" name="equipment" value="Whiteboard">
+        <label for="whiteboard">Whiteboard</label><br>
+        <input type="checkbox" id="ac" name="equipment" value="Klimaanlage">
+        <label for="ac">Klimaanlage</label><br>
+        <input type="checkbox" id="computer" name="equipment" value="Computer">
+        <label for="computer">Computer</label><br>
+    </div>
+    <button type="submit">Filtern</button>
+</form>
+{% endblock %}

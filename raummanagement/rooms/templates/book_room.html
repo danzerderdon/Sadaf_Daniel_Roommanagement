@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+{% block title %}Raum buchen{% endblock %}
+{% block content %}
+<h2>Raum {{ room.number }} buchen</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="date">Datum:</label>
+    <input type="date" id="date" name="date" required>
+    <label for="start_time">Startzeit:</label>
+    <input type="time" id="start_time" name="start_time" required>
+    <label for="end_time">Endzeit:</label>
+    <input type="time" id="end_time" name="end_time" required>
+    <button type="submit">Buchen</button>
+</form>
+<a href="{% url 'room_list' room.building.id %}">Zurück</a>
+{% endblock %}

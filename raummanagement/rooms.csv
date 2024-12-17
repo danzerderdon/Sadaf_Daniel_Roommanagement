@@ -1,0 +1,4 @@
+number,capacity,equipment,building_id,floor_count
+101,30,"Projector, Whiteboard",A,3
+102,20,"Computer, AC",A,3
+201,50,"Projector",B,2
