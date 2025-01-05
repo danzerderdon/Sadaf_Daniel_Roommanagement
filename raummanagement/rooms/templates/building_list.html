@@ -1,11 +1,55 @@
-
 {% extends 'base.html' %}
 {% block title %}Gebäude auswählen{% endblock %}
 {% block content %}
+
 <h2>Gebäude auswählen</h2>
-<ul>
-    {% for building in buildings %}
-    <li><a href="{% url 'room_list' building.id %}">{{ building.name }}</a></li>
-    {% endfor %}
-</ul>
+
+<div class="container">
+    <!-- Gebäudeliste -->
+    <div class="building-list">
+        <ul>
+            {% for building in buildings %}
+            <li><a href="{% url 'room_list' building.id %}">{{ building.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Bereich für das Foto -->
+    <div class="building-photo">
+        <img src="https://www.tha.de/Binaries/Binary39833/THA-lageplan-2024-mit-avv-300-RGB.jpg" alt="Gebäude Foto" id="photo" />
+    </div>
+</div>
+
+<style>
+    .container {
+        display: flex; /* Flexbox für nebeneinander angeordnete Bereiche */
+        justify-content: center;
+        align-items: stretch; /* Text und Bild gleich hoch */
+        gap: 30px; /* Abstand zwischen Liste und Bild */
+        margin: 30px 0;
+    }
+
+    .building-list {
+        width: 200; /* Liste nimmt 40% der Breite ein */
+        text-align: Right;
+        overflow: hidden; /* Falls die Liste länger ist, wird kein Überlauf angezeigt */
+    }
+
+    .building-photo {
+        width: 600; /* Bildbereich nimmt 40% der Breite ein */
+        display: flex;
+        align-items: center; /* Bild wird vertikal zentriert */
+        justify-content: center; /* Bild wird horizontal zentriert */
+    }
+
+    .building-photo img {
+        max-width: 600px;
+        max-height: 430px; /* Bild wird in den Bereich eingepasst */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 5px;
+        background-color: #f9f9f9;
+    }
+</style>
+
 {% endblock %}
