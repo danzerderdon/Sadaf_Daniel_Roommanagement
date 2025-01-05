@@ -1,11 +1,22 @@
-
 {% extends 'base.html' %}
-{% block title %}Freie Räume{% endblock %}
 {% block content %}
-<h2>Freie Räume</h2>
-<ul>
-    {% for room in rooms %}
-    <li>{{ room.number }} - {{ room.building.name }}</li>
-    {% endfor %}
-</ul>
+    <h1>Freie Räume</h1>
+    <form method="get">
+        <label for="datetime">Wähle einen Zeitpunkt:</label>
+        <input type="datetime-local" id="datetime" name="datetime" required>
+        <button type="submit">Anzeigen</button>
+    </form>
+    <hr>
+    <h2>Freie Räume</h2>
+    {% if rooms %}
+        <ul>
+            {% for room in rooms %}
+                <li>Raum {{ room.number }} - {{ room.building.name }}
+                    <a href="{% url 'book_room' room.id %}" class="button">- Raum buchen</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Keine freien Räume zum ausgewählten Zeitpunkt.</p>
+    {% endif %}
 {% endblock %}

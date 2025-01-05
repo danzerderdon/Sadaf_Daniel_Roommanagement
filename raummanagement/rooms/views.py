@@ -4,6 +4,9 @@ from .models import UserAccount, Building, Room, RoomBooking, UserCalendar
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.utils.dateparse import parse_datetime
+from .models import Room, RoomBooking
 from django.contrib.auth import get_user_model
 
 def login_view(request):
@@ -88,8 +91,15 @@ def book_room(request, room_id):
 
 @login_required
 def free_rooms(request):
-    booked_rooms = RoomBooking.objects.values_list('room', flat=True)
-    rooms = Room.objects.exclude(id__in=booked_rooms)
+    datetime_str = request.GET.get('datetime')
+    rooms = Room.objects.all()
+    if datetime_str:
+        datetime_obj = parse_datetime(datetime_str)
+        if datetime_obj:
+            booked_rooms = RoomBooking.objects.filter(
+                start_time__lte=datetime_obj, end_time__gte=datetime_obj
+            ).values_list('room_id', flat=True)
+            rooms = rooms.exclude(id__in=booked_rooms)
     return render(request, 'free_rooms.html', {'rooms': rooms})
 
 @login_required

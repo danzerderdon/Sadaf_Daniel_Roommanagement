@@ -1,15 +1,97 @@
-
 {% extends 'base.html' %}
 {% block title %}Meine Buchungen{% endblock %}
 {% block content %}
+
 <h2>Meine Buchungen</h2>
+
+<!-- Bereich für den Kalender -->
+<div id="calendar" style="width: 100%; max-width: 1200px; height: 100%; max-height: 700px; margin: auto; border: 1px solid black;"></div>
+
+<hr>
+
+<h2>Buchungsliste</h2>
 <ul>
     {% for booking in bookings %}
     <li>
-        Raum {{ booking.room.number }} - {{ booking.booking_date }} 
+        Raum {{ booking.room.number }} - {{ booking.booking_date }}
         ({{ booking.start_time }} - {{ booking.end_time }})
         <a href="{% url 'delete_booking' booking.id %}">Löschen</a>
     </li>
     {% endfor %}
 </ul>
+
+<!-- FullCalendar Script -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+
+<style>
+    .fc-event {
+        background-color: orange;
+        border: 1px solid darkorange;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .fc-event-title {
+        font-size: 18px;
+    }
+
+    /* Weißer Hintergrund für den gesamten Kalender */
+    .fc {
+        background-color: white;
+    }
+
+    /* Schwarze horizontale Linien für das Stundenraster */
+    .fc-timegrid-slot {
+        border-top: 1px solid black;
+    }
+
+    /* Schwarze vertikale Linien zwischen den Tagen */
+    .fc-timegrid-col-frame {
+        border-left: 1px solid black;
+    }
+
+    /* Schwarze Linien für die All-Day-Zelle */
+    .fc-timegrid-allday-frame {
+        border: 1px solid black;
+    }
+
+    /* Schwarze Ränder für die Kopfzeile der Wochentage */
+    .fc-col-header-cell {
+        border: 1px solid black;
+    }
+
+    /* Schwarze Ränder für die Tageszellen im Monatsraster */
+    .fc-daygrid-day-frame {
+        border: 1px solid black;
+    }
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'de',  // Sprache auf Deutsch setzen
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: [
+                {% for booking in bookings %}
+                {
+        title: 'Raum {{ booking.room.number }}',
+        start: '{{ booking.booking_date|date:"Y-m-d" }}T{{ booking.start_time|time:"H:i:s" }}',
+        end: '{{ booking.booking_date|date:"Y-m-d" }}T{{ booking.end_time|time:"H:i:s" }}'
+    },
+                {% endfor %}
+            ]
+        });
+        calendar.render();
+    });
+</script>
+
 {% endblock %}
