@@ -1,17 +1,34 @@
-
 {% extends 'base.html' %}
 {% block title %}Raum buchen{% endblock %}
 {% block content %}
+
+
 <h2>Raum {{ room.number }} buchen</h2>
-<form method="post">
+
+<form method="post" action="{% url 'book_room' room.id %}">
     {% csrf_token %}
+
     <label for="date">Datum:</label>
     <input type="date" id="date" name="date" required>
+
     <label for="start_time">Startzeit:</label>
     <input type="time" id="start_time" name="start_time" required>
+
     <label for="end_time">Endzeit:</label>
     <input type="time" id="end_time" name="end_time" required>
+
     <button type="submit">Buchen</button>
 </form>
+
 <a href="{% url 'room_list' room.building.id %}">Zurück</a>
+
+{% if request.method == "POST" %}
+    <h3>Debugging-Info:</h3>
+    <ul>
+        <li><strong>Datum:</strong> {{ request.POST.date }}</li>
+        <li><strong>Startzeit:</strong> {{ request.POST.start_time }}</li>
+        <li><strong>Endzeit:</strong> {{ request.POST.end_time }}</li>
+    </ul>
+{% endif %}
+
 {% endblock %}

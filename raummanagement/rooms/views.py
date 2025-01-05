@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.utils.dateparse import parse_datetime
 from .models import Room, RoomBooking
+from django.shortcuts import render
+from .models import Room
 from django.contrib.auth import get_user_model
 
 def login_view(request):
@@ -56,21 +58,29 @@ def room_list(request, building_id):
 
 @login_required
 def filter_rooms(request):
-    if request.method == "POST":
-        room_type = request.POST.get('room_type')
-        equipment = request.POST.getlist('equipment')
-        rooms = Room.objects.all()
+    rooms = Room.objects.all()  # Alle Räume abrufen
 
-        if room_type:
-            rooms = rooms.filter(category__name=room_type)
+    # Dynamisch alle einzigartigen Ausstattungsoptionen sammeln
+    all_equipment = set()
+    for room in rooms:
+        if room.equipment:  # Prüfen, ob der Raum eine Ausstattung hat
+            equipment_list = room.equipment.split(', ')
+            all_equipment.update(equipment_list)
 
-        for item in equipment:
-            rooms = rooms.filter(equipment__icontains=item)
+    # Ausstattung-Filter anwenden
+    selected_equipment = request.GET.getlist('equipment')
+    if selected_equipment:
+        for equipment in selected_equipment:
+            rooms = rooms.filter(equipment__icontains=equipment)
 
-        return render(request, 'filtered_rooms.html', {'rooms': rooms})
+    # Duplikate entfernen, basierend auf einer Kombination von Nummer und Gebäude
+    rooms = list({(room.number, room.building_id): room for room in rooms}.values())
 
-    return render(request, 'filter_rooms.html')
-
+    return render(request, 'rooms/filter_rooms.html', {
+        'rooms': rooms,
+        'all_equipment': sorted(all_equipment),  # Alphabetisch sortieren
+        'selected_equipment': selected_equipment
+    })
 @login_required
 def book_room(request, room_id):
     room = Room.objects.get(id=room_id)

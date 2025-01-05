@@ -5,7 +5,7 @@
 <h2>Meine Buchungen</h2>
 
 <!-- Bereich für den Kalender -->
-<div id="calendar" style="width: 100%; max-width: 1200px; height: 100%; max-height: 700px; margin: auto; border: 1px solid black;"></div>
+<div id="calendar" style="width: 100%; max-width: 800px; height: 100%; max-height: 550px; margin: auto; border: 1px solid black;"></div>
 
 <hr>
 
@@ -15,7 +15,7 @@
     <li>
         Raum {{ booking.room.number }} - {{ booking.booking_date }}
         ({{ booking.start_time }} - {{ booking.end_time }})
-        <a href="{% url 'delete_booking' booking.id %}">Löschen</a>
+        <a href="{% url 'delete_booking' booking.id %}">- Buchung Löschen</a>
     </li>
     {% endfor %}
 </ul>

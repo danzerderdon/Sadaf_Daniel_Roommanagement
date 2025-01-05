@@ -7,7 +7,7 @@
     {% for room in rooms %}
     <li>
         {{ room.number }} - Kapazität: {{ room.capacity }} Personen
-        <a href="{% url 'book_room' room.id %}">Buchen</a>
+        <a href="{% url 'book_room' room.id %}">- Raum buchen</a>
     </li>
     {% endfor %}
 </ul>

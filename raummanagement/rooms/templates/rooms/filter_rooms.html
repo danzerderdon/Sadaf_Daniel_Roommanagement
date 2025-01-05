@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Räume filtern{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center;">Räume filtern</h2>
+
+<!-- Filterformular -->
+<div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <form method="get" action="{% url 'filter_rooms' %}" style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #fff;">
+        <h2 style="text-align: center;">Ausstattung:</h2>
+        <div>
+            {% for equipment in all_equipment %}
+            <input type="checkbox" id="{{ equipment }}" name="equipment" value="{{ equipment }}"
+            {% if equipment in selected_equipment %}checked{% endif %}>
+            <label for="{{ equipment }}">{{ equipment }}</label><br>
+            {% endfor %}
+        </div>
+        <button type="submit" style="margin-top: 10px; background-color: orange; border: none; padding: 10px 20px; color: white; border-radius: 5px; cursor: pointer;">Filtern</button>
+    </form>
+</div>
+
+<hr>
+
+<!-- Liste der gefilterten Räume -->
+<h2 style="text-align: center;">Passende Räume:</h2>
+{% if rooms %}
+<div style="display: flex; justify-content: center;">
+    <ul style="list-style-type: none; padding: 0; width: 80%; max-width: 1000px; background-color: #fff; border: 1px solid #ddd; border-radius: 8px;">
+        {% for room in rooms %}
+        <li style="border-bottom: 1px solid #ddd; text-align: left; padding: 10px;">
+            <strong>Raum {{ room.number }}</strong> - Kapazität: {{ room.capacity }} Personen - Ausstattung: {{ room.equipment }} - Gebäude: {{ room.building.name }}
+            <a href="{% url 'book_room' room.id %}" class="button">- Raum buchen</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<p style="text-align: center; color: red;">Keine Räume gefunden.</p>
+{% endif %}
+
+{% endblock %}
