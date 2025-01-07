@@ -2,12 +2,12 @@
 {% block title %}Raum buchen{% endblock %}
 {% block content %}
 
-
 <h2>Raum {{ room.number }} buchen</h2>
 
+<!-- Buchungsformular nur für Planner -->
+{% if is_planner %}
 <form method="post" action="{% url 'book_room' room.id %}">
     {% csrf_token %}
-
     <label for="date">Datum:</label>
     <input type="date" id="date" name="date" required>
 
@@ -19,16 +19,67 @@
 
     <button type="submit">Buchen</button>
 </form>
+{% else %}
+<p style="color: red; font-weight: bold;">Sie haben nur Ansichtsrechte für die bestehenden Buchungen.</p>
+{% endif %}
 
 <a href="{% url 'room_list' room.building.id %}">Zurück</a>
 
-{% if request.method == "POST" %}
-    <h3>Debugging-Info:</h3>
-    <ul>
-        <li><strong>Datum:</strong> {{ request.POST.date }}</li>
-        <li><strong>Startzeit:</strong> {{ request.POST.start_time }}</li>
-        <li><strong>Endzeit:</strong> {{ request.POST.end_time }}</li>
-    </ul>
-{% endif %}
+<hr>
+
+<!-- Kalenderbereich -->
+<h2>Bestehende Buchungen für Raum {{ room.number }}</h2>
+<div id="calendar" style="width: 100%; max-width: 800px; height: 100%; max-height: 550px; margin: auto; border: 1px solid black;"></div>
+
+<!-- FullCalendar Script -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+
+<style>
+    .fc-event {
+        background-color: orange;
+        border: 1px solid darkorange;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .fc-event-title {
+        font-size: 18px;
+    }
+
+    .fc {
+        background-color: white;
+    }
+
+    .fc-timegrid-slot, .fc-timegrid-col-frame, .fc-timegrid-allday-frame, .fc-col-header-cell, .fc-daygrid-day-frame {
+        border: 1px solid black;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'de',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: [
+                {% for booking in bookings %}
+                {
+                    title: 'Raum {{ room.number }}',
+                    start: '{{ booking.booking_date|date:"Y-m-d" }}T{{ booking.start_time|time:"H:i:s" }}',
+                    end: '{{ booking.booking_date|date:"Y-m-d" }}T{{ booking.end_time|time:"H:i:s" }}'
+                },
+                {% endfor %}
+            ]
+        });
+        calendar.render();
+    });
+</script>
 
 {% endblock %}

@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% block title %}Einstellungen{% endblock %}
 {% block content %}
@@ -7,8 +6,16 @@
     {% csrf_token %}
     <label for="email">E-Mail ändern:</label>
     <input type="email" id="email" name="email" value="{{ request.user.email }}">
+
     <label for="password">Passwort ändern:</label>
     <input type="password" id="password" name="password">
+
+    <label for="role">Rolle auswählen:</label>
+    <select id="role" name="role">
+        <option value="viewer" {% if request.user.role == "viewer" %}selected{% endif %}>Viewer</option>
+        <option value="planner" {% if request.user.role == "planner" %}selected{% endif %}>Planner</option>
+    </select>
+
     <button type="submit">Speichern</button>
 </form>
 {% endblock %}

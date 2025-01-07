@@ -23,13 +23,15 @@ class UserAccountManager(BaseUserManager):
         return self.create_user(email, username, password, **extra_fields)
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
+    ROLE_CHOICES = [
+        ('viewer', 'Viewer'),
+        ('planner', 'Planner')
+    ]
+
+
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=100, unique=True)
-    role = models.CharField(max_length=50, choices=[
-        ('professor', 'Professor'),
-        ('student', 'Student'),
-        ('lehrperson', 'Lehrperson')
-    ])
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='viewer')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Required for admin access
 
@@ -48,6 +50,14 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         """Does the user have permissions to view the app `app_label`?"""
         return True
+
+    def is_viewer(self):
+        """Check if the user is a viewer."""
+        return self.role == 'viewer'
+
+    def is_planner(self):
+        """Check if the user is a planner."""
+        return self.role == 'planner'
 
 
 class Building(models.Model):

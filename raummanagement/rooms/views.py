@@ -81,10 +81,15 @@ def filter_rooms(request):
         'all_equipment': sorted(all_equipment),  # Alphabetisch sortieren
         'selected_equipment': selected_equipment
     })
+
+
 @login_required
 def book_room(request, room_id):
     room = Room.objects.get(id=room_id)
-    if request.method == "POST":
+    bookings = RoomBooking.objects.filter(room=room).order_by('booking_date', 'start_time')
+
+    # Zeige das Formular nur, wenn der Benutzer ein Planner ist
+    if request.user.role == 'planner' and request.method == "POST":
         booking_date = request.POST['date']
         start_time = request.POST['start_time']
         end_time = request.POST['end_time']
@@ -96,8 +101,14 @@ def book_room(request, room_id):
             end_time=end_time
         )
         messages.success(request, "Room booked successfully.")
-        return redirect('my_bookings')
-    return render(request, 'book_room.html', {'room': room})
+        return redirect('book_room', room_id=room_id)
+
+    # Render die Seite unabhängig von der Rolle
+    return render(request, 'book_room.html', {
+        'room': room,
+        'bookings': bookings,
+        'is_planner': request.user.role == 'planner'
+    })
 
 @login_required
 def free_rooms(request):
@@ -132,14 +143,18 @@ def account_settings(request):
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
+        role = request.POST['role']
         user = request.user
+
         if email:
             user.email = email
         if password:
             user.set_password(password)
+        if role in ['viewer', 'planner']:
+            user.role = role
         user.save()
-        messages.success(request, "Account updated successfully.")
+
+        messages.success(request, "Account und Rolle wurden erfolgreich aktualisiert.")
+        return redirect('account_settings')
+
     return render(request, 'account_settings.html')
-
-
-
