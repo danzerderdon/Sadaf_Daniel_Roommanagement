@@ -6,16 +6,33 @@
 
 <!-- Filterformular -->
 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <form method="get" action="{% url 'filter_rooms' %}" style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #fff;">
-        <h2 style="text-align: center;">Ausstattung:</h2>
-        <div>
+    <form method="get" action="{% url 'filter_rooms' %}" style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #fff; width: 80%; max-width: 600px;">
+
+        <!-- Dropdown für Gebäude -->
+        <h3>Gebäude:</h3>
+        <select name="building" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ddd;">
+            <option value="">Alle Gebäude</option>
+            {% for building in buildings %}
+            <option value="{{ building.id }}" {% if building.id|stringformat:"s" == selected_building %}selected{% endif %}>
+                {{ building.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <!-- Checkboxen für Ausstattung -->
+        <h3>Ausstattung:</h3>
+        <div class="equipment-container">
             {% for equipment in all_equipment %}
-            <input type="checkbox" id="{{ equipment }}" name="equipment" value="{{ equipment }}"
-            {% if equipment in selected_equipment %}checked{% endif %}>
-            <label for="{{ equipment }}">{{ equipment }}</label><br>
+            <div class="equipment-item">
+                <input type="checkbox" id="{{ equipment }}" name="equipment" value="{{ equipment }}"
+                {% if equipment in selected_equipment %}checked{% endif %}>
+                <label for="{{ equipment }}">{{ equipment }}</label>
+            </div>
             {% endfor %}
         </div>
-        <button type="submit" style="margin-top: 10px; background-color: orange; border: none; padding: 10px 20px; color: white; border-radius: 5px; cursor: pointer;">Filtern</button>
+
+        <!-- Filter-Button -->
+        <button type="submit" style="margin-top: 20px; background-color: orange; border: none; padding: 10px 20px; color: white; border-radius: 5px; cursor: pointer;">Filtern</button>
     </form>
 </div>
 
@@ -24,15 +41,18 @@
 <!-- Liste der gefilterten Räume -->
 <h2 style="text-align: center;">Passende Räume:</h2>
 {% if rooms %}
-<div style="display: flex; justify-content: center;">
-    <ul style="list-style-type: none; padding: 0; width: 80%; max-width: 1000px; background-color: #fff; border: 1px solid #ddd; border-radius: 8px;">
-        {% for room in rooms %}
-        <li style="border-bottom: 1px solid #ddd; text-align: left; padding: 10px;">
-            <strong>Raum {{ room.number }}</strong> - Kapazität: {{ room.capacity }} Personen - Ausstattung: {{ room.equipment }} - Gebäude: {{ room.building.name }}
-            <a href="{% url 'book_room' room.id %}" class="button">- Raum buchen</a>
-        </li>
-        {% endfor %}
-    </ul>
+<div class="room-list">
+    {% for room in rooms %}
+    <div class="room-card">
+        <div class="room-details">
+            <h3>Raum {{ room.number }}</h3>
+            <p>Kapazität: {{ room.capacity }} Personen</p>
+            <p>Ausstattung: {{ room.equipment|join:', ' }}</p>
+            <p>Gebäude: {{ room.building.name }}</p>
+        </div>
+        <a href="{% url 'book_room' room.id %}" class="button">Raum buchen</a>
+    </div>
+    {% endfor %}
 </div>
 {% else %}
 <p style="text-align: center; color: red;">Keine Räume gefunden.</p>

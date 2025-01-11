@@ -9,47 +9,83 @@
     <div class="building-list">
         <ul>
             {% for building in buildings %}
-            <li><a href="{% url 'room_list' building.id %}">{{ building.name }}</a></li>
+            <li>
+                <a href="{% url 'room_list' building.id %}"
+                   class="building-link"
+                   data-src="{{ building_images.building.id|default:default_image }}">
+                   {{ building.name }}
+                </a>
+            </li>
             {% endfor %}
         </ul>
     </div>
 
     <!-- Bereich für das Foto -->
     <div class="building-photo">
-        <img src="https://www.tha.de/Binaries/Binary39833/THA-lageplan-2024-mit-avv-300-RGB.jpg" alt="Gebäude Foto" id="photo" />
+        <img src="{{ default_image }}"
+             alt="Gebäude Foto"
+             id="photo" />
     </div>
 </div>
 
 <style>
     .container {
-        display: flex; /* Flexbox für nebeneinander angeordnete Bereiche */
+        display: flex;
         justify-content: center;
-        align-items: stretch; /* Text und Bild gleich hoch */
-        gap: 30px; /* Abstand zwischen Liste und Bild */
+        align-items: stretch;
+        gap: 30px;
         margin: 30px 0;
     }
 
     .building-list {
-        width: 200; /* Liste nimmt 40% der Breite ein */
-        text-align: Right;
-        overflow: hidden; /* Falls die Liste länger ist, wird kein Überlauf angezeigt */
+        width: 200px;
+        text-align: right;
     }
 
     .building-photo {
-        width: 600; /* Bildbereich nimmt 40% der Breite ein */
+        width: 910px;
         display: flex;
-        align-items: center; /* Bild wird vertikal zentriert */
-        justify-content: center; /* Bild wird horizontal zentriert */
+        align-items: center;
+        justify-content: center;
     }
 
     .building-photo img {
-        max-width: 600px;
-        max-height: 430px; /* Bild wird in den Bereich eingepasst */
+        width: 100%;
+        height: auto;
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 5px;
         background-color: #f9f9f9;
     }
+
+    .building-link {
+        color: #ff6f00;
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .building-link:hover {
+        color: #ff9900;
+    }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const links = document.querySelectorAll('.building-link');
+        const photo = document.getElementById('photo');
+
+        links.forEach(link => {
+            link.addEventListener('mouseover', function () {
+                const newSrc = link.getAttribute('data-src');
+                photo.setAttribute('src', newSrc);
+            });
+
+            link.addEventListener('mouseout', function () {
+                photo.setAttribute('src', '{{ default_image }}');
+            });
+        });
+    });
+</script>
 
 {% endblock %}

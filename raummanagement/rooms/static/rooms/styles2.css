@@ -1,0 +1,260 @@
+/* Allgemeines Styling */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(120deg, #fff4e6, #ffe1b3);
+    color: #333;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Kopfzeilen */
+h1, h2 {
+    color: #ff6f00;
+    margin: 20px 0;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Navigation */
+nav ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #ff6f00;
+    border-bottom: 2px solid #ff9900;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-radius: 12px; /* Rundungen an den Ecken */
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white; /* Textfarbe auf Weiß setzen */
+    font-weight: 500;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #f59e5b; /* Hintergrundfarbe anpassen */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+nav ul li a:hover {
+    background-color: #ff9900; /* Hover-Effekt mit einer dunkleren Orangefarbe */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+input, select, button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #ff6f00;
+    box-shadow: 0 0 8px rgba(255, 111, 0, 0.3);
+}
+
+button {
+    background-color: #ff6f00;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #ff9900;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Passende Räume Liste */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 12px 0;
+    padding: 12px 18px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: left;
+    transition: box-shadow 0.3s ease;
+}
+
+ul li:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+ul li a {
+    text-decoration: none;
+    color: #ff6f00;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+ul li a:hover {
+    color: #ff9900;
+    text-decoration: underline;
+}
+
+/* Kartenstil für Buchungsliste */
+.card {
+    padding: 20px;
+    margin: 15px 0;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    text-align: left;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.card .card-title {
+    font-weight: 600;
+    color: #ff6f00;
+    font-size: 18px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.card .card-details {
+    font-size: 14px;
+    color: #666;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #ff6f00;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.card a:hover {
+    color: #ff9900;
+    text-decoration: underline;
+}
+/* Formulare und Boxen */
+form, .content-box {
+    max-width: 600px; /* Feste maximale Breite für das gesamte Formular */
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Eingabefelder und Buttons */
+input, select, button {
+    width: 100%; /* Eingabefelder nehmen die gesamte Breite des Formulars ein */
+    max-width: 500px; /* Maximale Breite von 500px */
+    padding: 12px;
+    margin: 10px auto;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box; /* Sorgt dafür, dass Padding und Border innerhalb der Breite bleiben */
+}
+
+/* Button Styling */
+button {
+    width: 100%; /* Button nimmt ebenfalls die gesamte Breite des Formulars ein */
+    max-width: 500px;
+    background-color: #ff6f00;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #ff9900;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/* Container für die Karten */
+.room-list {
+    display: grid; /* Grid-Layout aktivieren */
+    grid-template-columns: repeat(4, 1fr); /* 4 gleich große Spalten */
+    gap: 20px; /* Abstand zwischen den Karten */
+    padding: 20px;
+    justify-items: center; /* Karten innerhalb der Spalten zentrieren */
+}
+
+/* Einzelne Karten */
+.room-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%; /* Karte füllt die Spalte vollständig */
+    max-width: 250px; /* Maximale Breite der Karte */
+    text-align: left;
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.room-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.room-details h3 {
+    margin: 0;
+    color: #ff6f00;
+    font-size: 20px;
+}
+
+.room-details p {
+    margin: 5px 0 10px;
+    color: #555;
+}
+
+/* Buchungsbutton innerhalb der Karten */
+.room-card .button {
+    text-align: center;
+    background-color: #ff6f00;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.room-card .button:hover {
+    background-color: #ff9900;
+}

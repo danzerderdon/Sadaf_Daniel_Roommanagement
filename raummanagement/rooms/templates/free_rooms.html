@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Freie Räume</h1>
-    <form method="get">
+    <form method="get" class="content-box">
         <label for="datetime">Wähle einen Zeitpunkt:</label>
         <input type="datetime-local" id="datetime" name="datetime" required>
         <button type="submit">Anzeigen</button>
@@ -9,13 +9,17 @@
     <hr>
     <h2>Freie Räume</h2>
     {% if rooms %}
-        <ul>
+        <div class="room-list">
             {% for room in rooms %}
-                <li>Raum {{ room.number }} - {{ room.building.name }}
-                    <a href="{% url 'book_room' room.id %}" class="button">- Raum buchen</a>
-                </li>
+                <div class="room-card">
+                    <div class="room-details">
+                        <h3>Raum {{ room.number }}</h3>
+                        <p>Gebäude: {{ room.building.name }}</p>
+                    </div>
+                    <a href="{% url 'book_room' room.id %}" class="button">Raum buchen</a>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Keine freien Räume zum ausgewählten Zeitpunkt.</p>
     {% endif %}

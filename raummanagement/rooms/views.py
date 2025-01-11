@@ -9,6 +9,7 @@ from django.utils.dateparse import parse_datetime
 from .models import Room, RoomBooking
 from django.shortcuts import render
 from .models import Room
+import ast  # Zum sicheren Auswerten von Listen-ähnlichen Zeichenketten
 from django.contrib.auth import get_user_model
 
 def login_view(request):
@@ -48,7 +49,19 @@ def home_view(request):
 @login_required
 def building_list(request):
     buildings = Building.objects.all()
-    return render(request, 'building_list.html', {'buildings': buildings})
+
+    # Dictionary mit Gebäude-ID und zugehörigem Bild
+    building_images = {"C": "https://www.tha.de/Binaries/Binary9220/13-05-08-HSA-C-Trakt-164.jpg" }
+
+    # Standardbild, falls kein Bild vorhanden
+    default_image = "https://www.tha.de/Binaries/Binary39833/THA-lageplan-2024-mit-avv-300-RGB.jpg"
+    return render(request, 'building_list.html', {
+        'buildings': buildings,
+        'building_images': building_images,
+        'default_image': default_image
+    })
+
+
 
 @login_required
 def room_list(request, building_id):
@@ -59,12 +72,14 @@ def room_list(request, building_id):
 @login_required
 def filter_rooms(request):
     rooms = Room.objects.all()  # Alle Räume abrufen
+    buildings = Building.objects.all()  # Alle Gebäude abrufen
 
     # Dynamisch alle einzigartigen Ausstattungsoptionen sammeln
     all_equipment = set()
     for room in rooms:
         if room.equipment:  # Prüfen, ob der Raum eine Ausstattung hat
-            equipment_list = room.equipment.split(', ')
+            # Entferne Klammern und Anführungszeichen, falls vorhanden
+            equipment_list = room.equipment.strip("[]").replace("'", "").split(', ')
             all_equipment.update(equipment_list)
 
     # Ausstattung-Filter anwenden
@@ -73,13 +88,22 @@ def filter_rooms(request):
         for equipment in selected_equipment:
             rooms = rooms.filter(equipment__icontains=equipment)
 
-    # Duplikate entfernen, basierend auf einer Kombination von Nummer und Gebäude
-    rooms = list({(room.number, room.building_id): room for room in rooms}.values())
+    # Gebäude-Filter anwenden
+    selected_building = request.GET.get('building')
+    if selected_building:
+        rooms = rooms.filter(building__id=selected_building)
+
+    # Ausstattungsliste bereinigen für die Anzeige
+    for room in rooms:
+        if room.equipment:
+            room.equipment = room.equipment.strip("[]").replace("'", "").replace(" ", "").split(',')
 
     return render(request, 'rooms/filter_rooms.html', {
         'rooms': rooms,
         'all_equipment': sorted(all_equipment),  # Alphabetisch sortieren
-        'selected_equipment': selected_equipment
+        'selected_equipment': selected_equipment,
+        'buildings': buildings,
+        'selected_building': selected_building
     })
 
 
