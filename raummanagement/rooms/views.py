@@ -117,6 +117,20 @@ def book_room(request, room_id):
         booking_date = request.POST['date']
         start_time = request.POST['start_time']
         end_time = request.POST['end_time']
+
+        # Überprüfe, ob der Raum bereits zur angegebenen Zeit gebucht ist
+        overlapping_bookings = RoomBooking.objects.filter(
+            room=room,
+            booking_date=booking_date,
+            start_time__lt=end_time,
+            end_time__gt=start_time
+        )
+
+        if overlapping_bookings.exists():
+            messages.error(request, "Dieser Raum ist zu diesem Zeitpunkt bereits gebucht.")
+            return redirect('book_room', room_id=room_id)  # Zurück zur Buchungsseite
+
+        # Falls keine Überschneidung, erstelle die Buchung
         RoomBooking.objects.create(
             user=request.user,
             room=room,
@@ -124,8 +138,9 @@ def book_room(request, room_id):
             start_time=start_time,
             end_time=end_time
         )
-        messages.success(request, "Room booked successfully.")
-        return redirect('book_room', room_id=room_id)
+
+        messages.success(request, "Raum erfolgreich gebucht!")
+        return redirect('my_bookings')  # Weiterleitung zu 'my_bookings' nach der Buchung
 
     # Render die Seite unabhängig von der Rolle
     return render(request, 'book_room.html', {
