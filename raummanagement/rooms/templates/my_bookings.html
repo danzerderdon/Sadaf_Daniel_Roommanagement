@@ -10,15 +10,17 @@
 <hr>
 
 <h2>Buchungsliste</h2>
-<ul>
+<div class="booking-list">
     {% for booking in bookings %}
-    <li>
-        Raum {{ booking.room.number }} - {{ booking.booking_date }}
-        ({{ booking.start_time }} - {{ booking.end_time }})
-        <a href="{% url 'delete_booking' booking.id %}">- Buchung Löschen</a>
-    </li>
+    <div class="booking-card">
+        <div class="booking-details">
+            <h3>Raum {{ booking.room.number }} - {{ booking.room.building.name }}</h3>
+            <p>{{ booking.booking_date|date:"d. M Y" }} - {{ booking.start_time }} bis {{ booking.end_time }}</p>
+        </div>
+        <a href="{% url 'delete_booking' booking.id %}" class="cancel-button">Buchung Löschen</a>
+    </div>
     {% endfor %}
-</ul>
+</div>
 
 <!-- FullCalendar Script -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
