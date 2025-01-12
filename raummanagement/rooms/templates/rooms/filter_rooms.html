@@ -19,11 +19,11 @@
             {% endfor %}
         </select>
 
+
         <!-- Kapazität Filter als Eingabefeld -->
         <h3>Kapazität:</h3>
         <input type="number" name="capacity" min="1" max="120" value="{{ selected_capacity|default:60 }}" step="1" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ddd;">
         <p style="text-align: center;">Kapazität: <span id="capacityValue">{{ selected_capacity|default:60 }}</span> Personen</p>
-
 
         <!-- Checkboxen für Ausstattung -->
         <h3>Ausstattung:</h3>
