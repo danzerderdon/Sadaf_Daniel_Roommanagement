@@ -88,10 +88,17 @@ def filter_rooms(request):
         for equipment in selected_equipment:
             rooms = rooms.filter(equipment__icontains=equipment)
 
+    # Kapazitätsfilter anwenden
+    selected_capacity = request.GET.get('capacity')
+    if selected_capacity:
+        rooms = rooms.filter(capacity__gte=int(selected_capacity))  # Filtern nach Kapazität
+
     # Gebäude-Filter anwenden
     selected_building = request.GET.get('building')
     if selected_building:
         rooms = rooms.filter(building__id=selected_building)
+
+
 
     # Ausstattungsliste bereinigen für die Anzeige
     for room in rooms:
