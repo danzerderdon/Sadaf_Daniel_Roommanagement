@@ -24,7 +24,7 @@ nav ul {
     margin: 0;
     display: flex;
     justify-content: center;
-    background-color: #ff6f00;
+    background-color: #fec8d8;
     border-bottom: 2px solid #ff9900;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -44,12 +44,12 @@ nav ul li a {
     font-size: 16px;
     padding: 10px 20px;
     border-radius: 8px;
-    background-color: #f59e5b; /* Hintergrundfarbe anpassen */
+    background-color: #fec8d8; /* Hintergrundfarbe anpassen */
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 nav ul li a:hover {
-    background-color: #ff9900; /* Hover-Effekt mit einer dunkleren Orangefarbe */
+    background-color: #fec8d8; /* Hover-Effekt mit einer dunkleren Orangefarbe */
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -77,7 +77,7 @@ input:focus, select:focus {
 }
 
 button {
-    background-color: #ff6f00;
+    background-color: #fec8d8;
     color: white;
     font-weight: 600;
     border: none;
@@ -201,7 +201,7 @@ button {
 }
 
 button:hover {
-    background-color: #ff9900;
+    background-color: #fec8d8;
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

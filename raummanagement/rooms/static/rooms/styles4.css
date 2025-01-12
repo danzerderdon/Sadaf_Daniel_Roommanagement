@@ -1,0 +1,99 @@
+/* Allgemeines Styling */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(120deg, #fff4e6, #ffe1b3);
+    color: #333;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Kopfzeilen */
+h1, h2 {
+    color: #ff6f00; /* Sekundärfarbe aus dem Logo */
+    margin: 20px 0;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Navigation */
+nav ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #fec8d8; /* Hauptfarbe aus dem Logo */
+    border-bottom: 2px solid #ff9900;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-radius: 12px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #fec8d8;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+nav ul li a:hover {
+    background-color: #ff6f00; /* Dunklere Orangefarbe */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulare und Boxen */
+form, .content-box {
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+input, select, button {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    margin: 10px auto;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #ff6f00; /* Sekundärfarbe */
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #ff9900; /* Hover mit einer dunkleren Orangefarbe */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Einzelne Karten */
+.room-card, .booking-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding:

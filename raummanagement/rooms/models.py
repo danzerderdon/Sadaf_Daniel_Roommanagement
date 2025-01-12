@@ -85,6 +85,3 @@ class UserCalendar(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
-class RoomCategory(models.Model):
-    name = models.CharField(max_length=100)
-    category_type = models.CharField(max_length=100)
