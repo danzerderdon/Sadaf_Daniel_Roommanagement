@@ -35,7 +35,7 @@ def create_account(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         if password == confirm_password:
-            user = UserAccount.objects.create_user(email=email, password=password)
+            user = UserAccount.objects.create_user(email=email, username=email, password=password)
             messages.success(request, "Account created successfully.")
             return redirect('login')
         else:
