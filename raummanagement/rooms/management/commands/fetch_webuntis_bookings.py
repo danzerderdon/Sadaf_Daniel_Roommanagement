@@ -1,7 +1,7 @@
-from django.core.management.base import BaseCommand
-import webuntis
 import datetime
+import webuntis
 from rooms.models import Room, RoomBooking, UserAccount
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Holt die Buchungen aus WebUntis und speichert sie in der Datenbank'
@@ -17,54 +17,52 @@ class Command(BaseCommand):
         ).login() as s:
             self.stdout.write(self.style.SUCCESS("Login erfolgreich!"))
 
-            # Holen aller Räume aus WebUntis
-            untis_rooms = s.rooms()  # Hier wird das WebUntis Raum-Objekt umbenannt
+            # Holen aller Räume
+            rooms = s.rooms()
             room_mapping = {}
 
-            # Räume abgleichen und Zuordnung erstellen (WebUntis name -> Django number)
-            for untis_room in untis_rooms:  # Umbenannt zu untis_room
-                room_mapping[untis_room.name] = untis_room.id  # WebUntis name zu WebUntis room.id
+            # Räume abgleichen und Zuordnung erstellen
+            for room in rooms:
+                room_mapping[room.name] = room.id
 
-            # Datum für den Zeitraum (letzter Monat bis heute)
+            # Definiere den Zeitraum für Oktober, November und Dezember 2024
+            year = 2024
             today = datetime.date.today()
-            last_month = today - datetime.timedelta(days=30)
+
+            # Oktober: Beginn und Ende
+            october_start = datetime.date(year, 10, 1)
+            october_end = datetime.date(year, 10, 31)
+
+            # November: Beginn und Ende
+            november_start = datetime.date(year, 11, 1)
+            november_end = datetime.date(year, 11, 30)
+
+            # Dezember: Beginn und Ende
+            december_start = datetime.date(year, 12, 1)
+            december_end = datetime.date(year, 12, 31)
 
             # Gehe durch alle Räume in der Django-Datenbank
-            for room in Room.objects.all():  # Dies bleibt der Django Room
-                if room.number in room_mapping:  # Vergleiche Django room.number mit WebUntis room.name
-                    webuntis_room_id = room_mapping[room.number]  # Verwende die Zuordnung basierend auf room.number
+            for room in Room.objects.all():
+                if room.number in room_mapping:
+                    webuntis_room_id = room_mapping[room.number]
 
-                    # Abrufen des Stundenplans für den Raum aus WebUntis
-                    timetable = s.timetable(room=webuntis_room_id, start=last_month, end=today)
+                    # Abrufen des Stundenplans für die einzelnen Monate
+                    for start_date, end_date in [(october_start, october_end), (november_start, november_end), (december_start, december_end)]:
+                        timetable = s.timetable(room=webuntis_room_id, start=start_date, end=end_date)
 
-                    # Buchungen speichern
-                    for event in timetable:
-                        print(event)
-                        # Extrahiere das Datum (YYYYMMDD) und konvertiere es zu einem Datum
-                        booking_date = datetime.datetime.strptime(str(event['date']), "%Y%m%d").date()
+                        # Buchungen speichern
+                        for event in timetable:
+                            event_date = event.start.date()  # Datum
+                            event_start_time = event.start.time()  # Startzeit
+                            event_end_time = event.end.time()  # Endzeit
 
-                        # Extrahiere Start- und Endzeit (HHMM) und konvertiere sie in Zeitobjekte
-                        start_time = datetime.datetime.strptime(str(event['startTime']).zfill(4), "%H%M").time()
-                        end_time = datetime.datetime.strptime(str(event['endTime']).zfill(4), "%H%M").time()
+                            # Buchung in der Django-Datenbank speichern
+                            RoomBooking.objects.create(
+                                user=UserAccount.objects.get(email="danzerdaniel@yahoo.com"),
+                                room=room,
+                                booking_date=event_date,
+                                start_time=event_start_time,
+                                end_time=event_end_time
+                            )
 
-                        # Extrahiere die Raum-ID
-                        room_id = event['ro'][0]['id']  # Hier verwenden wir die erste Raum-ID
-
-                        # Finde den entsprechenden Raum in der Datenbank anhand der ID
-                        try:
-                            room = Room.objects.get(id=room_id)
-                        except Room.DoesNotExist:
-                            print(f"Raum mit ID {room_id} wurde nicht gefunden.")
-                            continue
-
-                        # Speichern der Buchung in der Django-Datenbank
-                        RoomBooking.objects.create(
-                            user=UserAccount.objects.get(email="danzerdaniel@yahoo.com"),
-                            room=room,
-                            booking_date=booking_date,
-                            start_time=start_time,
-                            end_time=end_time
-                        )
-
-                        self.stdout.write(self.style.SUCCESS(
-                            f"Buchung für Raum {room.number} am {booking_date} von {start_time} bis {end_time} wurde erfolgreich hinzugefügt."))
+                    self.stdout.write(self.style.SUCCESS(f"Buchungen für {room.number} im Zeitraum Oktober bis Dezember 2024 wurden erfolgreich hinzugefügt."))
