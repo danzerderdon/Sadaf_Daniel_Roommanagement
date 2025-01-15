@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # WebUntis API-Verbindung
         with webuntis.Session(
-            username='danzer',
+            username='enter your username here',
             password='enter your password here',
             server='melpomene.webuntis.com',
             school='HS-Augsburg',
