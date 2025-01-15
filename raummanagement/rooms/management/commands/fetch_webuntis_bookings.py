@@ -10,7 +10,7 @@ class Command(BaseCommand):
         # WebUntis API-Verbindung
         with webuntis.Session(
             username='danzer',
-            password='Gullasch123!',
+            password='enter your password here',
             server='melpomene.webuntis.com',
             school='HS-Augsburg',
             useragent='WebUntis Test'
